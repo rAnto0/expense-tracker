@@ -5,7 +5,7 @@
   <form method="post" action="{% url 'accounts:signup' %}">
     {% csrf_token %}
     <p>
-      Username:
+      Логин:
       <input
         type="text"
         name="username"
@@ -19,13 +19,13 @@
         data-test="username"
       />
       <span class="helptext"
-        >Required. 150 characters or fewer. Letters, digits and @/./+/-/_
-        only.</span
+        >Требуется не более 150 символов. Буквы, цифры и @/./+/-/_
+ только.</span
       >
     </p>
 
     <p>
-      Password:
+      Пароль:
       <input
         type="password"
         name="password1"
@@ -38,12 +38,12 @@
       <span class="helptext">
         <ul>
           <li>
-            Your password can’t be too similar to your other personal
-            information.
+            Ваш пароль не должен быть слишком похож на другие ваши персональные
+данные.
           </li>
-          <li>Your password must contain at least 8 characters.</li>
-          <li>Your password can’t be a commonly used password.</li>
-          <li>Your password can’t be entirely numeric.</li>
+          <li>Ваш пароль должен содержать не менее 8 символов.</li>
+          <li>Ваш пароль не может быть простым паролем.</li>
+          <li>Ваш пароль не может быть полностью из цифр.</li>
           {% if errors %} {% for error in errors %}
           <li style="color: yellow" data-test="error-labels">{{ error }}</li>
           {% endfor %} {% endif %}
@@ -52,7 +52,7 @@
     </p>
 
     <p>
-      Password confirmation:
+      Подтверждение пароля:
       <input
         type="password"
         name="password2"
@@ -63,12 +63,12 @@
         data-test="password2"
       />
       <span class="helptext"
-        >Enter the same password as before, for verification.</span
+        >Введите тот же пароль, что и раньше, для подтверждения.</span
       >
     </p>
 
     <button type="submit" class="btn btn-primary" data-test="signup">
-      Sign up
+      Зарегистрироваться
     </button>
     <input type="hidden" name="text" value="{% url 'expenses:home' %}" />
   </form>

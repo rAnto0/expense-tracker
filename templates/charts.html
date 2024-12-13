@@ -62,14 +62,14 @@
         <table class="w-100 table-striped table-hover table-bg">
           <tbody>
             <tr>
-              <td>Current month's total expenses:</td>
+              <td>Общие расходы за текущий месяц:</td>
               <td class="statistics" data-test="stats-current-month-expenses">
                 € {{ statistics.curr_month_expense_sum }} {% if budget %} / € {{ budget }}
 
                 {% if budget > statistics.curr_month_expense_sum %}
-                <span class="badge badge-pill badge-success"> under budget </span>
+                <span class="badge badge-pill badge-success"> в рамках бюджета </span>
                 {% else %}
-                <span class="badge badge-pill badge-danger"> over budget </span>
+                <span class="badge badge-pill badge-danger"> перерасход </span>
                 {% endif %}
                 <a
                   href="{% url 'expenses:update_budget' %}"
@@ -89,13 +89,13 @@
               </td>
             </tr>
             <tr>
-              <td>Last month's total expenses:</td>
+              <td>Общие расходы за прошлый месяц:</td>
               <td class="statistics" data-test="stats-last-month-expenses">
                 € {{ statistics.one_month_ago_expense_sum }}
               </td>
             </tr>
             <tr>
-              <td>Current Month vs Last Month's (%) comparison:</td>
+              <td>Сравнение текущего месяца с прошлым месяцем (в %):</td>
               <td
                 class="statistics"
                 data-test="stats-current-month-vs-last-month-comparison"
@@ -114,20 +114,20 @@
               </td>
             </tr>
             <tr>
-              <td>Monthly expense average:</td>
+              <td>Среднемесячные расходы:</td>
               <td class="statistics" data-test="stats-monthly-expense-average">
                 € {{ statistics.monthly_expense_average }}
               </td>
             </tr>
 
             <tr>
-              <td>Daily expense average:</td>
+              <td>Средние ежедневные расходы:</td>
               <td class="statistics" data-test="stats-daily-expense-average">
                 € {{ statistics.daily_expense_average }}
               </td>
             </tr>
             <tr>
-              <td>Biggest category expenditure:</td>
+              <td>Расходы по самой крупной категории:</td>
               <td class="statistics" data-test="stats-biggest-category-expense">
                 {{ statistics.biggest_category_expenditure.category }}:
                 <p class="black-font">
@@ -136,7 +136,7 @@
               </td>
             </tr>
             <tr>
-              <td>Smallest category expenditure:</td>
+              <td>Расходы по наименьшей категории:</td>
               <td class="statistics" data-test="stats-smallest-category-expense">
                 {{ statistics.smallest_category_expenditure.category }}:
                 <p class="black-font">
@@ -145,21 +145,21 @@
               </td>
             </tr>
             <tr>
-              <td>Biggest expense:</td>
+              <td>Самый большой расход:</td>
               <td class="statistics" data-test="stats-biggest-expense">
                 ({{ statistics.max_expense_content}})
                 <p class="black-font">€ {{ statistics.max_expense }}</p>
               </td>
             </tr>
             <tr>
-              <td>Smallest expense:</td>
+              <td>Наименьший расход:</td>
               <td class="statistics" data-test="stats-smallest-expense">
                 ({{ statistics.min_expense_content}})
                 <p class="black-font">€ {{ statistics.min_expense }}</p>
               </td>
             </tr>
             <tr class="font-weight-bold">
-              <td>Total expenses:</td>
+              <td>Общая сумма расходов:</td>
               <td class="statistics" data-test="stats-total-expenses">
                 € {{ statistics.sum_expense }}
               </td>

@@ -83,8 +83,8 @@ ROOT_URLCONF = "expense_tracker.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        # "DIRS": [os.path.join(BASE_DIR, "templates")],
-        "DIRS": [os.path.join(BASE_DIR, 'front-end')],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        # "DIRS": [os.path.join(BASE_DIR, 'front-end')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -151,7 +151,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGES = [
+    ('en', 'English'),
+    ('ru', 'Russian'),
+]
+
+LANGUAGE_CODE = "ru"
 
 TIME_ZONE = "Europe/Warsaw"
 
@@ -175,3 +180,4 @@ STATICFILES_DIRS = (
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+LOGIN_REDIRECT_URL = '/'

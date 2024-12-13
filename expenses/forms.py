@@ -17,6 +17,14 @@ class ExpenseForm(forms.ModelForm):
             "date": forms.DateInput(attrs={"class": "form-control"}),
         }
 
+        labels = {
+            "amount": "Сумма",
+            "content": "Описание",
+            "category": "Категория",
+            "source": "Источник",
+            "date": "Дата",
+        }
+
 
 class BudgetForm(forms.ModelForm):
     class Meta:
@@ -25,3 +33,5 @@ class BudgetForm(forms.ModelForm):
         exclude = ["owner"]
 
         widgets = {"amount": forms.NumberInput(attrs={"class": "form-control"})}
+
+        labels = {"amount": "Сумма"}

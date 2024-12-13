@@ -1,6 +1,6 @@
 {% extends 'base.html' %} 
 
-{% block title %}Expenses{% endblock title %} 
+{% block title %}Pocket{% endblock title %}
 
 {% block content %}
 
@@ -12,7 +12,7 @@
       class="create-expense-btn btn btn-lg font-weight-bold"
       href="{% url 'expenses:create' %}"
       data-test="create-expense"
-      >+Add Expense</a
+      >+Добавить расход</a
     >
   </div>
 
@@ -24,7 +24,7 @@
       class="create-budget-btn btn btn-primary btn-lg font-weight-bold"
       href="{% url 'expenses:create_budget' %}"
       data-test="create-budget"
-      >+Add Monthly Budget</a
+      >+Добавить месячный бюджет</a
     >
   </div>
 
@@ -36,10 +36,10 @@
 {% if not expenses %}
 
   <h5 class="font-weight-bold text-center instruction">
-    No expenses for this user.
+    Нет расходов для этого пользователя.
   </h5>
   <h5 class="text-center instruction">
-    Add some expenses to display your expense list.
+    Добавьте некоторые расходы, чтобы отобразить свой список расходов.
   </h5>
 
 {% endif %} 
@@ -48,7 +48,7 @@
 
 
     <div id="total-expenses-container" class="total-expenses-container m-auto">
-        Total expenses: <span>€{{ total_expense_amount }}</span>
+        Общая сумма расходов: <span>€{{ total_expense_amount }}</span>
     </div>
 
 
@@ -75,7 +75,7 @@
           ></div>
         </div>
         <div style="color: green; float: left; width: 50%" data-test="monthly-budget">
-          Monthly budget:
+          Месячный бюджет:
           <div>
             € {{ budget }}
             <a
@@ -96,7 +96,7 @@
         </div>
 
         <div style="color: green">
-          Current month expenses:
+          Текущие месячные расходы:
           <div>
             € {{ current_month_expenses }} {% if current_month_expenses > budget %}
             <p style="color: red; float: right">
@@ -115,7 +115,7 @@
 {% if num_expenses < 2 %}
 
   <h5 class="text-center instruction">
-    When you have 2 or more expenses your line chart will be displayed.
+    Когда у вас будет 2 или более расходов, на экране появится ваш линейный график.
   </h5>
 
 {% else %}
@@ -139,13 +139,13 @@
     <table class="table table-striped table-hover table-bg">
       <thead>
         <tr>
-          <th scope="col">Date</th>
-          <th scope="col">Source</th>
-          <th scope="col">Category</th>
-          <th scope="col">Content</th>
-          <th scope="col">Amount</th>
-          <th scope="col">Update</th>
-          <th scope="col">Delete</th>
+          <th scope="col">Дата</th>
+          <th scope="col">Источник</th>
+          <th scope="col">Категория</th>
+          <th scope="col">Описание</th>
+          <th scope="col">Сумма</th>
+          <th scope="col">Обновить</th>
+          <th scope="col">Удалить</th>
         </tr>
       </thead>
 
@@ -189,21 +189,21 @@
       {% if expenses.has_previous %}
 
         <li class="page-item" data-test="first-button">
-          <a class="page-link" href="?page=1">First</a>
+          <a class="page-link" href="?page=1">Первая</a>
         </li>
         <li class="page-item" data-test="previous-button">
           <a class="page-link" href="?page={{ expenses.previous_page_number }}"
-            >Previous</a
+            >Предыдущая</a
           >
         </li>
 
       {% else %}
 
         <li class="disabled page-item" data-test="first-button">
-          <a class="page-link" href="">First</a>
+          <a class="page-link" href="">Первая</a>
         </li>
         <li class="disabled page-item" data-test="previous-button">
-          <a class="page-link" href="">Previous</a>
+          <a class="page-link" href="">Предыдущая</a>
         </li>
 
       {% endif %} 
@@ -234,19 +234,19 @@
         {% if expenses.has_next %}
 
           <li class="page-item" data-test="next-button">
-            <a class="page-link" href="?page={{ expenses.next_page_number }}">Next</a>
+            <a class="page-link" href="?page={{ expenses.next_page_number }}">Следующая</a>
           </li>
           <li class="page-item" data-test="last-button">
-            <a class="page-link" href="?page={{ num_pages }}">Last</a>
+            <a class="page-link" href="?page={{ num_pages }}">Последняя</a>
           </li>
 
         {% else %}
 
           <li class="disabled page-item" data-test="next-button">
-            <a class="page-link" href="">Next</a>
+            <a class="page-link" href="">Следующая</a>
           </li>
           <li class="disabled page-item" data-test="last-button">
-            <a class="page-link" href="">Last</a>
+            <a class="page-link" href="">Последняя</a>
           </li>
           
         {% endif %}

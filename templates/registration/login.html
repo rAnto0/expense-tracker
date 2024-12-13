@@ -2,7 +2,7 @@
 {% block content %}
 {% if form.errors %}
 
-<p>Your username and password didn't match. Please try again.</p>
+<p>Ваши имя пользователя и пароль не совпали. Пожалуйста, попробуйте снова.</p>
 
 {% endif %}
 
@@ -14,7 +14,7 @@
   >
     {% csrf_token %}
     <p>
-      Username:
+      Логин:
       <input
         type="text"
         name="username"
@@ -24,7 +24,7 @@
       />
     </p>
     <p>
-      Password:
+      Пароль:
       <input
         type="password"
         name="password"
@@ -34,7 +34,7 @@
       />
     </p>
     <button name="submit" class="btn btn-primary" data-test="login">
-      Log In
+      Войти
     </button>
     <input type="hidden" name="text" value="{% url 'expenses:home' %}" />
   </form>

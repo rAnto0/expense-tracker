@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="form-group">
-  <h3>Update expense:</h3>
+  <h3>Обновить расходы:</h3>
   <form
     action="{% url 'expenses:update' expense.pk %}"
     class="expense-form font-weight-bold"
@@ -17,13 +17,13 @@
       class="btn btn-primary"
       data-test="update-expense-save"
     >
-      Save changes
+      Сохранить изменения
     </button>
     <a
       class="btn btn-secondary cancel-btn"
       href="{% url 'expenses:home' %}"
       data-test="update-expense-cancel"
-      >Cancel</a
+      >Отмена</a
     >
   </form>
 </div>
