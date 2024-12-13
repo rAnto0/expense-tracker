@@ -1,0 +1,21 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "faker": "^5.5.3"
+  },
+  "scripts": {
+    "build": "npm install",
+    "test": "cypress run",
+    "test:headless": "cypress run --headless",
+    "test:open": "npx cypress open"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^10.8.0",
+    "cypress-image-snapshot": "^4.0.1"
+  }
+}
