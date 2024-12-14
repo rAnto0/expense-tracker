@@ -84,7 +84,7 @@ const handleCreateLineChart = () => {
       createLineChart(
         response,
         "total-expenses-line-chart",
-        "Total expenses by day"
+        "Общие расходы по дням"
       );
     },
   });
@@ -121,7 +121,7 @@ const createLineChart = (data, canvasId, titleText) => {
           {
             scaleLabel: {
               display: true,
-              labelString: "Dates",
+              labelString: "Даты",
             },
           },
         ],
@@ -129,7 +129,7 @@ const createLineChart = (data, canvasId, titleText) => {
           {
             scaleLabel: {
               display: true,
-              labelString: "(€) Amounts",
+              labelString: "(€) Суммы",
             },
           },
         ],
@@ -151,7 +151,7 @@ const handleCreateAllExpensesPieChart = () => {
       createPieChart(
         response,
         "total-expenses-pie-chart",
-        `Total expense amounts by category`
+        `Общая сумма расходов по категориям`
       );
     },
   });
@@ -166,7 +166,7 @@ const handleCreateMontlyExpensesPieChart = () => {
       createPieChart(
         response,
         "monthly-expenses-pie-chart",
-        "Monthly expense amounts by category"
+        "Суммы ежемесячных расходов по категориям"
       );
     },
   });
@@ -221,7 +221,7 @@ const handleCreateExpensesByMonthBarChart = () => {
       createBarChart(
         response,
         "monthly-expenses-bar-chart",
-        "Expense amounts by month",
+        "Суммы расходов по месяцам",
         true
       );
     },
@@ -237,7 +237,7 @@ const handleCreateExpensesByWeekBarChart = () => {
       createBarChart(
         response,
         "weekly-expenses-bar-chart",
-        "Expense amounts by week (Monday - Sunday)"
+        "Суммы расходов по неделям (понедельник - воскресенье)"
       );
     },
   });
