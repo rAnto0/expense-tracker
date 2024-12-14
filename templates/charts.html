@@ -1,175 +1,40 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
 {% block title %}Графики и Статистика{% endblock title %}
 
-{% block content %} 
+{% block content %}
 
 {% if not expenses %}
-  
   <h5 class="font-weight-bold text-center instruction">
     Никаких расходов для этого пользователя.
   </h5>
   <h5 class="text-center instruction">
     Пожалуйста, добавьте расходы, чтобы появились графики и статистика.
   </h5>
-
 {% else %}
-  
-  <div class="row">
-    <div class="col-md-6 inlineCanvasContainer">
-      <canvas
-        id="monthly-expenses-bar-chart"
-        class="monthly-expenses-bar-chart"
-        data-test="monthly-expenses-bar-chart"
-      ></canvas>
-    </div>
-    <div class="col-md-6 inlineCanvasContainer">
-      <canvas
-        id="weekly-expenses-bar-chart"
-        class="weekly-expenses-bar-chart"
-        data-test="weekly-expenses-bar-chart"
-      ></canvas>
-    </div>
-  </div>
 
   <div class="row">
-    <div class="col-md-6 inlineCanvasContainer">
-      <canvas
-        id="total-expenses-pie-chart"
-        class="total-expenses-pie-chart"
-        data-test="total-expenses-pie-chart"
-      ></canvas>
+    <div class="col-md-6 text-center">
+      <h5>Общие расходы по дням</h5>
+      <img src="data:image/png;base64,{{ chart_images.line_chart }}" class="img-fluid" alt="Линейный график">
     </div>
-    <div class="col-md-6 inlineCanvasContainer">
-      <canvas
-        id="monthly-expenses-pie-chart"
-        class="monthly-expenses-pie-chart"
-        data-test="monthly-expenses-pie-chart"
-      ></canvas>
+    <div class="col-md-6 text-center">
+      <h5>Расходы по месяцам</h5>
+      <img src="data:image/png;base64,{{ chart_images.monthly_chart }}" class="img-fluid" alt="График по месяцам">
     </div>
   </div>
 
-  <script>
-    createCharts("charts");
-  </script>
-
-{% endif %} 
-
-{% if expenses %}
-  <div id="statistics-table" class="statistics-table" data-test="statistics-table">
-    <div class="row">
-      <div class="col-md-12">
-        <table class="w-100 table-striped table-hover table-bg">
-          <tbody>
-            <tr>
-              <td>Общие расходы за текущий месяц:</td>
-              <td class="statistics" data-test="stats-current-month-expenses">
-                € {{ statistics.curr_month_expense_sum }} {% if budget %} / € {{ budget }}
-
-                {% if budget > statistics.curr_month_expense_sum %}
-                <span class="badge badge-pill badge-success"> в рамках бюджета </span>
-                {% else %}
-                <span class="badge badge-pill badge-danger"> перерасход </span>
-                {% endif %}
-                <a
-                  href="{% url 'expenses:update_budget' %}"
-                  class="font-weight-bold"
-                  data-test="update-budget"
-                >
-                  <span class="badge-pill badge-warning">✎</span>
-                </a>
-                <a
-                  href="{% url 'expenses:delete_budget' %}"
-                  class="font-weight-bold"
-                  data-test="delete-budget"
-                >
-                  <span class="badge-pill badge-danger">X</span>
-                </a>
-                {% endif %}
-              </td>
-            </tr>
-            <tr>
-              <td>Общие расходы за прошлый месяц:</td>
-              <td class="statistics" data-test="stats-last-month-expenses">
-                € {{ statistics.one_month_ago_expense_sum }}
-              </td>
-            </tr>
-            <tr>
-              <td>Сравнение текущего месяца с прошлым месяцем (в %):</td>
-              <td
-                class="statistics"
-                data-test="stats-current-month-vs-last-month-comparison"
-              >
-                {% if statistics.monthly_percentage_diff == 0 %}
-                <span> 0% </span>
-                {% elif statistics.monthly_percentage_diff > 100 %}
-                <span class="badge badge-pill badge-danger">
-                  {{ statistics.monthly_percentage_diff }}%
-                </span>
-                {% else%}
-                <span class="badge badge-pill badge-success">
-                  {{ statistics.monthly_percentage_diff }}%
-                </span>
-                {% endif %}
-              </td>
-            </tr>
-            <tr>
-              <td>Среднемесячные расходы:</td>
-              <td class="statistics" data-test="stats-monthly-expense-average">
-                € {{ statistics.monthly_expense_average }}
-              </td>
-            </tr>
-
-            <tr>
-              <td>Средние ежедневные расходы:</td>
-              <td class="statistics" data-test="stats-daily-expense-average">
-                € {{ statistics.daily_expense_average }}
-              </td>
-            </tr>
-            <tr>
-              <td>Расходы по самой крупной категории:</td>
-              <td class="statistics" data-test="stats-biggest-category-expense">
-                {{ statistics.biggest_category_expenditure.category }}:
-                <p class="black-font">
-                  € {{ statistics.biggest_category_expenditure.amount }}
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td>Расходы по наименьшей категории:</td>
-              <td class="statistics" data-test="stats-smallest-category-expense">
-                {{ statistics.smallest_category_expenditure.category }}:
-                <p class="black-font">
-                  € {{ statistics.smallest_category_expenditure.amount }}
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td>Самый большой расход:</td>
-              <td class="statistics" data-test="stats-biggest-expense">
-                ({{ statistics.max_expense_content}})
-                <p class="black-font">€ {{ statistics.max_expense }}</p>
-              </td>
-            </tr>
-            <tr>
-              <td>Наименьший расход:</td>
-              <td class="statistics" data-test="stats-smallest-expense">
-                ({{ statistics.min_expense_content}})
-                <p class="black-font">€ {{ statistics.min_expense }}</p>
-              </td>
-            </tr>
-            <tr class="font-weight-bold">
-              <td>Общая сумма расходов:</td>
-              <td class="statistics" data-test="stats-total-expenses">
-                € {{ statistics.sum_expense }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div class="row mt-4">
+    <div class="col-md-6 text-center">
+      <h5>Расходы по неделям</h5>
+      <img src="data:image/png;base64,{{ chart_images.weekly_chart }}" class="img-fluid" alt="График по неделям">
+    </div>
+    <div class="col-md-6 text-center">
+      <h5>Расходы по категориям</h5>
+      <img src="data:image/png;base64,{{ chart_images.pie_chart }}" class="img-fluid" alt="Круговая диаграмма">
     </div>
   </div>
 
-{% endif %} 
+{% endif %}
 
 {% endblock content %}

@@ -120,16 +120,13 @@
 
 {% else %}
 
-  <!-- Line chart code -->
-  <div class="canvasContainer col-md-12">
-    <canvas id="total-expenses-line-chart" class="total-expenses-line-chart"
-    data-test="total-expenses-line-chart"></canvas>
+{% if graph %}
+  <div class="text-center">
+    <img src="data:image/png;base64,{{ graph }}" alt="Общие расходы по дням" class="img-fluid"/>
   </div>
-
-  <script>
-    document.getElementById("create-expense-btn").focus();
-    createCharts("homepage");
-  </script>
+{% else %}
+  <p class="text-center">Нет данных для отображения графика.</p>
+{% endif %}
 
 {% endif %} 
 
@@ -154,7 +151,7 @@
         <tr>
           <td>{{ expense.get_date_without_time }}</td>
           <td>{{ expense.source }}</td>
-          <td>{{ expense.category }}</td>
+          <td>{{ expense.display_category }}</td>
           <td>{{ expense.content }}</td>
           <td>€ {{ expense.amount }}</td>
           <td class="font-weight-bold">

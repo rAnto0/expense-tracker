@@ -11,70 +11,183 @@ from expenses import utils
 from .forms import BudgetForm, ExpenseForm
 from .models import Budget, Expense
 
+import matplotlib.pyplot as plt
+import io
+import base64
+
 
 @login_required
 def homepage(request):
     Expense.objects.add_testuser_expenses(request)
 
-    template = "homepage.html"
-    user_expenses = Expense.objects.filter(
-        owner=request.user).order_by("-date")
+    # Получаем все расходы текущего пользователя, отсортированные по дате
+    user_expenses = Expense.objects.filter(owner=request.user).order_by("date")
 
-    total_expense_amount = Expense.objects.get_total_expenses(
-        owner=request.user)
-    budget = Expense.objects.get_budget(owner=request.user)
+    # Создаём словарь для хранения сумм расходов по дням
+    line_chart_data = {}
+    for expense in user_expenses:
+        date = expense.date.strftime("%Y-%m-%d")
+        line_chart_data[date] = line_chart_data.get(date, 0) + float(expense.amount)
 
-    page = request.GET.get("page", 1)
-    paginator = Paginator(user_expenses, 15)
+    # Сортируем данные по дате
+    sorted_dates = list(line_chart_data.keys())
+    sorted_amounts = list(line_chart_data.values())
 
-    try:
-        expenses = paginator.page(page)
-    except PageNotAnInteger:
-        expenses = paginator.page(1)
-    except EmptyPage:
-        expenses = paginator.page(paginator.num_pages)
+    # Генерация графика с Matplotlib
+    plt.figure(figsize=(10, 7))
+    plt.plot(sorted_dates, sorted_amounts, marker="o", linestyle="-", color="orange")
+    plt.title("Общие расходы по дням")
+    plt.xlabel("Дата")
+    plt.ylabel("Сумма (€)")
+    plt.xticks(rotation=45)
+    plt.grid(True)
 
-    pagination_range_down = expenses.number - 5
-    pagination_range_up = expenses.number + 5
+    # Сохраняем график в буфер памяти
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format="png")
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+
+    # Кодируем изображение в base64
+    graph = base64.b64encode(image_png).decode("utf-8")
+    plt.close()
 
     context = {
-        "expenses": expenses,
-        "total_expense_amount": total_expense_amount,
-        "budget": budget,
-        "num_expenses": len(user_expenses),
-        "num_pages": paginator.num_pages,
-        "pagination_range_down": pagination_range_down,
-        "pagination_range_up": pagination_range_up,
+        "expenses": user_expenses,
+        "graph": graph,
     }
 
-    if budget:
-        current_month_expenses = Expense.objects.get_monthly_expense_sum(
-            owner=request.user
-        )
-        expenses_vs_budget_percentage_diff = (
-            (current_month_expenses / budget * 100) if budget else 0
-        )
-        amount_over_budget = current_month_expenses - budget
-
-        context["current_month_expenses"] = current_month_expenses
-        context[
-            "expenses_vs_budget_percentage_diff"
-        ] = expenses_vs_budget_percentage_diff
-        context["amount_over_budget"] = amount_over_budget
-
-    return render(request, template, context)
+    return render(request, "homepage.html", context)
 
 
 @login_required
 def charts(request):
-    template = "charts.html"
-    expenses = Expense.objects.filter(owner=request.user)
+    expenses = Expense.objects.filter(owner=request.user).order_by("date")
     budget = Expense.objects.get_budget(request.user)
     statistics = Expense.objects.get_statistics(request.user)
 
-    context = {"expenses": expenses,
-               "budget": budget, "statistics": statistics}
-    return render(request, template, context)
+    # Функция для создания линейного графика
+    def generate_line_chart():
+        dates = [expense.date for expense in expenses]
+        amounts = [expense.amount for expense in expenses]
+
+        plt.figure(figsize=(10, 5))
+        plt.plot(dates, amounts, marker='o')
+        plt.title("Общие расходы по дням")
+        plt.xlabel("Дата")
+        plt.ylabel("Сумма (€)")
+        plt.xticks(rotation=45)
+        plt.grid(True)
+
+        buffer = io.BytesIO()
+        plt.tight_layout()
+        plt.savefig(buffer, format="png")
+        buffer.seek(0)
+        image = base64.b64encode(buffer.getvalue()).decode("utf-8")
+        buffer.close()
+        plt.close()
+        return image
+
+    # Функция для создания столбчатого графика по месяцам
+    def generate_monthly_expenses_chart():
+        from collections import defaultdict
+        import calendar
+
+        monthly_data = defaultdict(float)
+        for expense in expenses:
+            month = expense.date.strftime("%Y-%m")
+            monthly_data[month] += float(expense.amount)
+
+        months = sorted(monthly_data.keys())
+        amounts = [monthly_data[month] for month in months]
+
+        plt.figure(figsize=(10, 5))
+        plt.bar(months, amounts, color='skyblue')
+        plt.title("Расходы по месяцам")
+        plt.xlabel("Месяц")
+        plt.ylabel("Сумма (€)")
+        plt.xticks(rotation=45)
+        plt.grid(True)
+
+        buffer = io.BytesIO()
+        plt.tight_layout()
+        plt.savefig(buffer, format="png")
+        buffer.seek(0)
+        image = base64.b64encode(buffer.getvalue()).decode("utf-8")
+        buffer.close()
+        plt.close()
+        return image
+
+    # Функция для создания столбчатого графика по неделям
+    def generate_weekly_expenses_chart():
+        from collections import defaultdict
+
+        weekly_data = defaultdict(float)
+        for expense in expenses:
+            week = expense.date.strftime("%Y-%U")
+            weekly_data[week] += float(expense.amount)
+
+        weeks = sorted(weekly_data.keys())
+        amounts = [weekly_data[week] for week in weeks]
+
+        plt.figure(figsize=(10, 5))
+        plt.bar(weeks, amounts, color='lightcoral')
+        plt.title("Расходы по неделям")
+        plt.xlabel("Неделя")
+        plt.ylabel("Сумма (€)")
+        plt.xticks(rotation=45)
+        plt.grid(True)
+
+        buffer = io.BytesIO()
+        plt.tight_layout()
+        plt.savefig(buffer, format="png")
+        buffer.seek(0)
+        image = base64.b64encode(buffer.getvalue()).decode("utf-8")
+        buffer.close()
+        plt.close()
+        return image
+
+    # Функция для создания круговой диаграммы по категориям
+    def generate_pie_chart():
+        from collections import defaultdict
+
+        category_data = defaultdict(float)
+        for expense in expenses:
+            category_data[expense.category] += float(expense.amount)
+
+        categories = list(category_data.keys())
+        amounts = list(category_data.values())
+
+        plt.figure(figsize=(8, 8))
+        plt.pie(amounts, labels=categories, autopct='%1.1f%%', startangle=140)
+        plt.title("Расходы по категориям")
+
+        buffer = io.BytesIO()
+        plt.tight_layout()
+        plt.savefig(buffer, format="png")
+        buffer.seek(0)
+        image = base64.b64encode(buffer.getvalue()).decode("utf-8")
+        buffer.close()
+        plt.close()
+        return image
+
+    # Генерация всех графиков
+    chart_images = {
+        "line_chart": generate_line_chart(),
+        "monthly_chart": generate_monthly_expenses_chart(),
+        "weekly_chart": generate_weekly_expenses_chart(),
+        "pie_chart": generate_pie_chart(),
+    }
+
+    context = {
+        "expenses": expenses,
+        "budget": budget,
+        "statistics": statistics,
+        "chart_images": chart_images,
+    }
+
+    return render(request, "charts.html", context)
 
 
 @login_required

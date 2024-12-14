@@ -289,6 +289,9 @@ class Expense(models.Model):
         date_without_time = utils.reformat_date(self.date, "%Y-%m-%d")
         return date_without_time
 
+    def display_category(self):
+        return self.get_category_display()
+
     class Meta:
         ordering = ["-date"]
 
