@@ -5,9 +5,6 @@ from expenses import views
 app_name = "expenses"
 
 urlpatterns = [
-    # path("", views.home, name="home"),
-    # re_path(r'^(?:.*)/?$', views.home)
-
     path("", views.homepage, name="home"),
     path("charts/", views.charts, name="charts"),
     path("create/", views.create_expense, name="create"),
