@@ -54,9 +54,6 @@ INSTALLED_APPS = [
 
     "expenses.apps.ExpensesConfig",
     "accounts.apps.AccountsConfig",
-    "api.apps.ApiConfig",
-
-
 ]
 
 CURRENCY = "€"
