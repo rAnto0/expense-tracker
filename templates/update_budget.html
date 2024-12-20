@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Update Budget{% endblock title %}
+{% block content %}
+
+<div class="form-group">
+  <h3>Обновить бюджет:</h3>
+  <form
+    action="{% url 'expenses:update_budget' %}"
+    class="budget-form font-weight-bold"
+    method="post"
+    data-test="update-budget-form"
+  >
+    {% csrf_token %} {{ form.as_p }}
+    <button
+      name="submit"
+      type="submit"
+      class="btn btn-primary"
+      data-test="update-budget-save"
+    >
+      Сохранить изменения
+    </button>
+    <a href="{% url 'expenses:home' %}" data-test="update-budget-cancel"
+      >Отмена</a
+    >
+  </form>
+</div>
+
+{% endblock content %}

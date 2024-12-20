@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Графики и Статистика{% endblock title %}
+
+{% block content %}
+
+{% if not expenses %}
+  <h5 class="font-weight-bold text-center instruction">
+    Никаких расходов для этого пользователя.
+  </h5>
+  <h5 class="text-center instruction">
+    Пожалуйста, добавьте расходы, чтобы появились графики и статистика.
+  </h5>
+{% else %}
+
+  <div class="row">
+    <div class="col-md-6 text-center">
+      <h5>Общие расходы по дням</h5>
+      <img src="data:image/png;base64,{{ chart_images.line_chart }}" class="img-fluid" alt="Линейный график">
+    </div>
+    <div class="col-md-6 text-center">
+      <h5>Расходы по месяцам</h5>
+      <img src="data:image/png;base64,{{ chart_images.monthly_chart }}" class="img-fluid" alt="График по месяцам">
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6 text-center">
+      <h5>Расходы по неделям</h5>
+      <img src="data:image/png;base64,{{ chart_images.weekly_chart }}" class="img-fluid" alt="График по неделям">
+    </div>
+    <div class="col-md-6 text-center">
+      <h5>Расходы по категориям</h5>
+      <img src="data:image/png;base64,{{ chart_images.pie_chart }}" class="img-fluid" alt="Круговая диаграмма">
+    </div>
+  </div>
+
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Delete Expense{% endblock title %}
+{% block content %}
+
+<div class="form-group">
+  <h3>Удалить расход:</h3>
+  <form method="post" class="text-center" data-test="delete-expense-form">
+    {% csrf_token %} Вы уверены, что хотите удалить этот элемент?
+    <button
+      name="submit"
+      type="submit"
+      class="btn btn-danger"
+      data-test="delete-expense-yes"
+    >
+      Да
+    </button>
+    <a
+      class="btn btn-secondary cancel-btn"
+      href="{% url 'expenses:home' %}"
+      data-test="delete-expense-no"
+      >Отмена</a
+    >
+  </form>
+</div>
+
+{% endblock content %}

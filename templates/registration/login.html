@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if form.errors %}
+
+<p>Ваши имя пользователя и пароль не совпали. Пожалуйста, попробуйте снова.</p>
+
+{% endif %}
+
+<div class="form-group font-weight-bold">
+  <form
+    method="post"
+    action="{% url 'accounts:login' %}"
+    data-test="login-form"
+  >
+    {% csrf_token %}
+    <p>
+      Логин:
+      <input
+        type="text"
+        name="username"
+        class="form-control"
+        id="id_username"
+        data-test="username"
+      />
+    </p>
+    <p>
+      Пароль:
+      <input
+        type="password"
+        name="password"
+        class="form-control"
+        id="id_password"
+        data-test="password"
+      />
+    </p>
+    <button name="submit" class="btn btn-primary" data-test="login">
+      Войти
+    </button>
+    <input type="hidden" name="text" value="{% url 'expenses:home' %}" />
+  </form>
+</div>
+
+{% endblock content %}

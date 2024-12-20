@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="form-group font-weight-bold">
+  <form method="post" action="{% url 'accounts:signup' %}">
+    {% csrf_token %}
+    <p>
+      Логин:
+      <input
+        type="text"
+        name="username"
+        class="form-control"
+        maxlength="150"
+        autocapitalize="none"
+        autocomplete="username"
+        autofocus
+        required
+        id="id_username"
+        data-test="username"
+      />
+      <span class="helptext"
+        >Требуется не более 150 символов. Буквы, цифры и @/./+/-/_
+ только.</span
+      >
+    </p>
+
+    <p>
+      Пароль:
+      <input
+        type="password"
+        name="password1"
+        class="form-control"
+        autocomplete="new-password"
+        required
+        id="id_password1"
+        data-test="password1"
+      />
+      <span class="helptext">
+        <ul>
+          <li>
+            Ваш пароль не должен быть слишком похож на другие ваши персональные
+данные.
+          </li>
+          <li>Ваш пароль должен содержать не менее 8 символов.</li>
+          <li>Ваш пароль не может быть простым паролем.</li>
+          <li>Ваш пароль не может быть полностью из цифр.</li>
+          {% if errors %} {% for error in errors %}
+          <li style="color: yellow" data-test="error-labels">{{ error }}</li>
+          {% endfor %} {% endif %}
+        </ul>
+      </span>
+    </p>
+
+    <p>
+      Подтверждение пароля:
+      <input
+        type="password"
+        name="password2"
+        class="form-control"
+        autocomplete="new-password"
+        required
+        id="id_password2"
+        data-test="password2"
+      />
+      <span class="helptext"
+        >Введите тот же пароль, что и раньше, для подтверждения.</span
+      >
+    </p>
+
+    <button type="submit" class="btn btn-primary" data-test="signup">
+      Зарегистрироваться
+    </button>
+    <input type="hidden" name="text" value="{% url 'expenses:home' %}" />
+  </form>
+</div>
+
+{% endblock content %}

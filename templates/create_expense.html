@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Expense{% endblock %}
+
+{% block content %}
+<div class="form-group">
+  <form
+    class="expense-form font-weight-bold"
+    method="post"
+    data-test="create-expense-form"
+  >
+    {% csrf_token %}
+
+    {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+      </div>
+    {% endfor %}
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      data-test="create-expense-save"
+    >
+      Сохранить
+    </button>
+
+    <a
+      class="btn btn-secondary cancel-btn"
+      href="{% url 'expenses:home' %}"
+      data-test="create-expense-cancel"
+    >
+      Отмена
+    </a>
+  </form>
+</div>
+{% endblock content %}
